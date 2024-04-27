@@ -44,13 +44,19 @@ function AdminPanel() {
           <FormLabel htmlFor="showMarketData">Show Market Data</FormLabel>
           <Checkbox id="showMarketData" isChecked={settings.showMarketData} name="showMarketData" onChange={handleSettingsChange} />
         </FormControl>
-        <Button mt={4} colorScheme="blue" onClick={() => toast({
-          title: "Settings Updated",
-          description: "Your settings have been saved successfully.",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        })}>
+        <Button
+          mt={4}
+          colorScheme="blue"
+          onClick={() => {
+            toast({
+              title: "Settings Updated",
+              description: "Your settings have been saved successfully.",
+              status: "success",
+              duration: 3000,
+              isClosable: true,
+            });
+          }}
+        >
           Save Settings
         </Button>
       </Box>
