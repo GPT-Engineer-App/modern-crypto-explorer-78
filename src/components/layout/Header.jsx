@@ -6,6 +6,7 @@ import InfoTicker from "../common/InfoTicker";
 import GasPriceInfo from "../common/GasPriceInfo";
 import SearchInput from "./SearchInput";
 import { Link as RouterLink } from "react-router-dom";
+import useAdminStore from "../../stores/useAdminStore";
 
 const Header = ({}) => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -39,10 +40,13 @@ const Header = ({}) => {
       <Flex alignItems="center" gap={3} justifyContent="flex-end">
         <GasPriceInfo showTooltip={true} />
         <SearchInput />
-        <Button onClick={toggleColorMode} variant="outline" borderColor="gray.200" ml="auto">
+        <Button onClick={toggleColorMode} variant="outline" borderColor="gray.200" ml="auto" mr={4}>
           {colorMode === "light" ? <FaMoon /> : <FaSun />}
         </Button>
         {ctaButton}
+        <Button colorScheme="blue" onClick={useAdminStore.getState().handleMetaMaskLogin}>
+          Login with MetaMask
+        </Button>
       </Flex>
     </Flex>
   );
@@ -65,6 +69,9 @@ const Header = ({}) => {
         </Text>
       ))}
       {ctaButton}
+      <Button colorScheme="blue" onClick={useAdminStore.getState().handleMetaMaskLogin}>
+        Login with MetaMask
+      </Button>
     </Flex>
   );
 
