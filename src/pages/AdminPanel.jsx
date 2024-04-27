@@ -44,6 +44,7 @@ function AdminPanel() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [accounts, setAccounts] = useState([]);
   const toast = useToast();
 
   const handleMetaMaskLogin = async () => {
@@ -52,6 +53,7 @@ function AdminPanel() {
         const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
         if (accounts.length > 0) {
           setIsLoggedIn(true);
+          setAccounts(accounts);
           toast({
             title: "Login Successful",
             description: `Logged in with MetaMask account: ${accounts[0]}`,
@@ -103,6 +105,12 @@ function AdminPanel() {
           <FormLabel htmlFor="showMarketData">Show Market Data</FormLabel>
           <Checkbox id="showMarketData" isChecked={settings.showMarketData} name="showMarketData" onChange={handleSettingsChange} />
         </FormControl>
+        <Box mt={4}>
+          <Text fontSize="lg">Connected Wallet: {accounts[0]}</Text>
+          <Button colorScheme="red" onClick={() => setIsLoggedIn(false)}>
+            Disconnect Wallet
+          </Button>
+        </Box>
         {settings.menuItems.map((item, index) => (
           <Box key={index} mt={4}>
             <Text fontWeight="bold">{item.label}</Text>
