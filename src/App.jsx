@@ -8,13 +8,14 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import CryptoDetails from "./pages/CryptoDetails";
 import NewsPage from "./pages/NewsPage";
-import useAssetStore from './stores/useAssetStore'; 
-import useHistoricalBTCDataStore from './stores/useHistoricalBTCDataStore'; 
+import AdminPanel from "./pages/AdminPanel";
+import useAssetStore from "./stores/useAssetStore";
+import useHistoricalBTCDataStore from "./stores/useHistoricalBTCDataStore";
 
 function App() {
-  const assets = useAssetStore(state => state.assets);
-  const fetchAssets = useAssetStore(state => state.fetchAssets);
-  const fetchHistoricalBtcData = useHistoricalBTCDataStore(state => state.fetchHistoricalBtcData); // Access fetchHistoricalBtcData
+  const assets = useAssetStore((state) => state.assets);
+  const fetchAssets = useAssetStore((state) => state.fetchAssets);
+  const fetchHistoricalBtcData = useHistoricalBTCDataStore((state) => state.fetchHistoricalBtcData); // Access fetchHistoricalBtcData
 
   useEffect(() => {
     // Fetch assets immediately on component mount
@@ -66,14 +67,15 @@ function App() {
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
       <Router>
-        <Header/>
-          <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/favorites" element={<Favorites />} />
-              <Route path="/news" element={<NewsPage />} />
-              <Route path="/crypto/:id" element={<CryptoDetails />} />
-          </Routes>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/news" element={<NewsPage />} />
+          <Route path="/crypto/:id" element={<CryptoDetails />} />
+          <Route path="/admin" element={<AdminPanel />} />
+        </Routes>
         <Footer />
       </Router>
     </Box>

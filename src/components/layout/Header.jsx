@@ -5,9 +5,9 @@ import InfoBar from "../common/InfoBar";
 import InfoTicker from "../common/InfoTicker";
 import GasPriceInfo from "../common/GasPriceInfo";
 import SearchInput from "./SearchInput";
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from "react-router-dom";
 
-const Header = ({ }) => {
+const Header = ({}) => {
   const { colorMode, toggleColorMode } = useColorMode();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -15,7 +15,7 @@ const Header = ({ }) => {
 
   const menuItems = [
     { label: "📈 Market", to: "/" },
-    { label: "❤️ Favorites", to: "/favorites" }, 
+    { label: "❤️ Favorites", to: "/favorites" },
     { label: "📰 News", to: "/news" },
   ];
 
@@ -43,6 +43,9 @@ const Header = ({ }) => {
           {colorMode === "light" ? <FaMoon /> : <FaSun />}
         </Button>
         {ctaButton}
+        <Button as={RouterLink} to="/admin" colorScheme="teal">
+          Admin Panel
+        </Button>
       </Flex>
     </Flex>
   );
