@@ -46,14 +46,34 @@ function AdminPanel() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const toast = useToast();
 
-  const handleLogin = () => {
-    if (username === "admin" && password === "admin") {
-      setIsLoggedIn(true);
+  const handleMetaMaskLogin = async () => {
+    if (window.ethereum) {
+      try {
+        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+        if (accounts.length > 0) {
+          setIsLoggedIn(true);
+          toast({
+            title: "Login Successful",
+            description: `Logged in with MetaMask account: ${accounts[0]}`,
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
+      } catch (error) {
+        toast({
+          title: "Login Failed",
+          description: "Could not retrieve accounts from MetaMask.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
     } else {
       toast({
-        title: "Authentication Failed",
-        description: "Invalid username or password.",
-        status: "error",
+        title: "MetaMask Not Found",
+        description: "Please install MetaMask.",
+        status: "warning",
         duration: 3000,
         isClosable: true,
       });
@@ -113,16 +133,8 @@ function AdminPanel() {
 
   return (
     <Box p={5}>
-      <FormControl>
-        <FormLabel htmlFor="username">Username</FormLabel>
-        <Input id="username" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-      </FormControl>
-      <FormControl mt={4}>
-        <FormLabel htmlFor="password">Password</FormLabel>
-        <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      </FormControl>
-      <Button mt={4} colorScheme="blue" onClick={handleLogin}>
-        Login
+      <Button mt={4} colorScheme="blue" onClick={handleMetaMaskLogin}>
+        Login with MetaMask
       </Button>
     </Box>
   );
