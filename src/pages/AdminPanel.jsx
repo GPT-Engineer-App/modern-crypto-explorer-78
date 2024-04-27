@@ -1,5 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useContext, createContext, useReducer } from "react";
 import { Box, Text, Input, Button, FormControl, FormLabel, useToast, Checkbox } from "@chakra-ui/react";
+
+const AdminStoreContext = createContext();
+
+const adminReducer = (state, action) => {
+  switch (action.type) {
+    case "ADD_MENU_ITEM":
+      return { ...state, menuItems: [...state.menuItems, action.payload] };
+    case "UPDATE_MENU_ITEM":
+      return {
+        ...state,
+        menuItems: state.menuItems.map((item) => (item.label === action.payload.label ? { ...item, content: action.payload.content } : item)),
+      };
+    case "REMOVE_MENU_ITEM":
+      return {
+        ...state,
+        menuItems: state.menuItems.filter((item) => item.label !== action.payload),
+      };
+    default:
+      return state;
+  }
+};
+
+const AdminStoreProvider = ({ children }) => {
+  const initialState = {
+    menuItems: [
+      { label: "Market", content: "Market data content" },
+      { label: "Favorites", content: "Favorite items content" },
+    ],
+  };
+  const [state, dispatch] = useReducer(adminReducer, initialState);
+
+  const addMenuItem = (menuItem) => dispatch({ type: "ADD_MENU_ITEM", payload: menuItem });
+  const updateMenuItem = (label, content) => dispatch({ type: "UPDATE_MENU_ITEM", payload: { label, content } });
+  const removeMenuItem = (label) => dispatch({ type: "REMOVE_MENU_ITEM", payload: label });
+
+  return <AdminStoreContext.Provider value={{ state, addMenuItem, updateMenuItem, removeMenuItem }}>{children}</AdminStoreContext.Provider>;
+};
+
+const useAdminStore = () => useContext(AdminStoreContext);
 
 function AdminPanel() {
   const [username, setUsername] = useState("");
@@ -44,6 +83,15 @@ function AdminPanel() {
           <FormLabel htmlFor="showMarketData">Show Market Data</FormLabel>
           <Checkbox id="showMarketData" isChecked={settings.showMarketData} name="showMarketData" onChange={handleSettingsChange} />
         </FormControl>
+        {settings.menuItems.map((item, index) => (
+          <Box key={index} mt={4}>
+            <Text fontWeight="bold">{item.label}</Text>
+            <Input value={item.content} onChange={(e) => useAdminStore.getState().updateMenuItem(item.label, e.target.value)} />
+            <Button colorScheme="red" onClick={() => useAdminStore.getState().removeMenuItem(item.label)}>
+              Remove
+            </Button>
+          </Box>
+        ))}
         <Button
           mt={4}
           colorScheme="blue"
