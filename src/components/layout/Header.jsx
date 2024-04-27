@@ -43,9 +43,6 @@ const Header = ({}) => {
           {colorMode === "light" ? <FaMoon /> : <FaSun />}
         </Button>
         {ctaButton}
-        <Button as={RouterLink} to="/admin" colorScheme="teal">
-          Admin Panel
-        </Button>
       </Flex>
     </Flex>
   );
